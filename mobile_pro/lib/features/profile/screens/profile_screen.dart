@@ -11,38 +11,70 @@ class ProfileScreen extends ConsumerWidget {
     final user = ref.watch(authProvider).user;
 
     return Scaffold(
+      backgroundColor: ZelusColors.background,
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(
+          'Profile',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              // TODO: Edit profile
-            },
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              color: ZelusColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: ZelusColors.border.withOpacity(0.5),
+                width: 1,
+              ),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.edit_outlined, size: 22),
+              onPressed: () {
+                // TODO: Edit profile
+              },
+            ),
           ),
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: ZelusColors.gold.withOpacity(0.2),
-              child: Icon(Icons.person, size: 50, color: ZelusColors.gold),
+            // Modern profile header
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                gradient: ZelusColors.primaryGradient,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: ZelusColors.primary.withOpacity(0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: const Icon(Icons.person, size: 50, color: Colors.white),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Text(
               user?.name ?? 'Professional',
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
             ),
+            const SizedBox(height: 4),
             Text(
               user?.email ?? '',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: ZelusColors.textSecondary,
                   ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             
             // Profile sections
             _ProfileSection(
@@ -88,17 +120,26 @@ class _ProfileSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.only(bottom: 12, top: 8),
           child: Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
                 ),
           ),
         ),
-        Card(
+        Container(
+          decoration: BoxDecoration(
+            color: ZelusColors.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: ZelusColors.border.withOpacity(0.5),
+              width: 1,
+            ),
+          ),
           child: Column(children: items),
         ),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -121,4 +162,5 @@ class _ProfileItem extends StatelessWidget {
     );
   }
 }
+
 

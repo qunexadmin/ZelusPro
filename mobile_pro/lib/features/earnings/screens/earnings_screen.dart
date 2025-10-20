@@ -17,85 +17,157 @@ class _EarningsScreenState extends ConsumerState<EarningsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ZelusColors.background,
       appBar: AppBar(
-        title: const Text('Earnings'),
+        title: Text(
+          'Earnings',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
         actions: [
-          PopupMenuButton<String>(
-            initialValue: _selectedPeriod,
-            onSelected: (value) => setState(() => _selectedPeriod = value),
-            itemBuilder: (context) => ['Today', 'Week', 'Month', 'Year']
-                .map((period) => PopupMenuItem(value: period, child: Text(period)))
-                .toList(),
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              color: ZelusColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: ZelusColors.border.withOpacity(0.5),
+                width: 1,
+              ),
+            ),
+            child: PopupMenuButton<String>(
+              initialValue: _selectedPeriod,
+              icon: const Icon(Icons.filter_list, size: 22),
+              onSelected: (value) => setState(() => _selectedPeriod = value),
+              itemBuilder: (context) => ['Today', 'Week', 'Month', 'Year']
+                  .map((period) => PopupMenuItem(value: period, child: Text(period)))
+                  .toList(),
+            ),
           ),
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Total Earnings Card
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    Text(
-                      'Total Earnings',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: ZelusColors.textSecondary,
-                          ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '\$2,450',
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: ZelusColors.success,
-                          ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'This $_selectedPeriod',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+            // Modern Total Earnings Card
+            Container(
+              padding: const EdgeInsets.all(28),
+              decoration: BoxDecoration(
+                gradient: ZelusColors.primaryGradient,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: ZelusColors.primary.withOpacity(0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 16),
-
-            // Stats Row
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          const Icon(Icons.trending_up, color: ZelusColors.success),
-                          const SizedBox(height: 8),
-                          const Text('28', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                          Text('Bookings', style: Theme.of(context).textTheme.bodySmall),
-                        ],
+              child: Column(
+                children: [
+                  const Text(
+                    'Total Earnings',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    '\$2,450',
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      'This $_selectedPeriod',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 12),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Stats Row with modern cards
+            Row(
+              children: [
                 Expanded(
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          const Icon(Icons.attach_money, color: ZelusColors.gold),
-                          const SizedBox(height: 8),
-                          const Text('\$87', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                          Text('Avg/Booking', style: Theme.of(context).textTheme.bodySmall),
-                        ],
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: ZelusColors.surface,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: ZelusColors.border.withOpacity(0.5),
+                        width: 1,
                       ),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: ZelusColors.success.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(Icons.trending_up, color: ZelusColors.success, size: 24),
+                        ),
+                        const SizedBox(height: 12),
+                        const Text('28', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
+                        const SizedBox(height: 4),
+                        Text('Bookings', style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: ZelusColors.textSecondary,
+                            )),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: ZelusColors.surface,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: ZelusColors.border.withOpacity(0.5),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: ZelusColors.warning.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(Icons.attach_money, color: ZelusColors.warning, size: 24),
+                        ),
+                        const SizedBox(height: 12),
+                        const Text('\$87', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
+                        const SizedBox(height: 4),
+                        Text('Avg/Booking', style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: ZelusColors.textSecondary,
+                            )),
+                      ],
                     ),
                   ),
                 ),

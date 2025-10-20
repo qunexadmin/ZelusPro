@@ -80,42 +80,44 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Modern Logo with gradient
+                    // Minimal Logo Icon
                     Container(
-                      width: 88,
-                      height: 88,
+                      width: 56,
+                      height: 56,
                       decoration: BoxDecoration(
                         gradient: ZelusColors.primaryGradient,
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: ZelusColors.primary.withOpacity(0.3),
-                            blurRadius: 24,
-                            offset: const Offset(0, 8),
+                            color: ZelusColors.primary.withOpacity(0.2),
+                            blurRadius: 16,
+                            offset: const Offset(0, 4),
                           ),
                         ],
                       ),
                       child: const Icon(
                         Icons.auto_awesome,
-                        size: 48,
+                        size: 28,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                     
-                    // Title with modern typography
+                    // Brand Name
                     Text(
-                      'Welcome Back',
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      'ZELUS PRO',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             fontWeight: FontWeight.w700,
+                            letterSpacing: 2.0,
                           ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     Text(
-                      'Sign in to your Zelus Pro account',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      'Business Dashboard',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: ZelusColors.textSecondary,
+                            letterSpacing: 0.5,
                           ),
                       textAlign: TextAlign.center,
                     ),
