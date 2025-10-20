@@ -2,58 +2,89 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'typography.dart';
 
-/// Zelus app theme
+/// Zelus modern app theme
 class ZelusTheme {
-  /// Get light theme
+  /// Get light theme - Modern minimal AI aesthetic
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.light(
-        primary: ZelusColors.charcoal,
-        secondary: ZelusColors.gold,
+        primary: ZelusColors.primary,
+        secondary: ZelusColors.secondary,
+        tertiary: ZelusColors.accent,
         surface: ZelusColors.surface,
-        background: ZelusColors.white,
+        background: ZelusColors.background,
         error: ZelusColors.error,
-        onPrimary: ZelusColors.white,
-        onSecondary: ZelusColors.charcoal,
+        onPrimary: ZelusColors.textOnPrimary,
+        onSecondary: ZelusColors.textOnPrimary,
         onSurface: ZelusColors.textPrimary,
         onBackground: ZelusColors.textPrimary,
-        onError: ZelusColors.white,
+        onError: ZelusColors.textOnPrimary,
       ),
-      scaffoldBackgroundColor: ZelusColors.white,
+      scaffoldBackgroundColor: ZelusColors.background,
       textTheme: ZelusTypography.getTextTheme(),
       appBarTheme: AppBarTheme(
-        backgroundColor: ZelusColors.white,
-        foregroundColor: ZelusColors.charcoal,
+        backgroundColor: Colors.transparent,
+        foregroundColor: ZelusColors.textPrimary,
         elevation: 0,
-        centerTitle: true,
-        titleTextStyle: ZelusTypography.getTextTheme().headlineMedium,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        titleTextStyle: ZelusTypography.getTextTheme().titleLarge?.copyWith(
+          fontWeight: FontWeight.w600,
+        ),
       ),
       cardTheme: CardThemeData(
-        color: ZelusColors.white,
-        elevation: 1,
+        color: ZelusColors.surface,
+        elevation: 0,
+        shadowColor: ZelusColors.shadow,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(20), // More rounded
+          side: BorderSide(
+            color: ZelusColors.border.withOpacity(0.5),
+            width: 1,
+          ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: ZelusColors.charcoal,
-          foregroundColor: ZelusColors.white,
+          backgroundColor: ZelusColors.primary,
+          foregroundColor: ZelusColors.textOnPrimary,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16), // More rounded
+          ),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.3,
           ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: ZelusColors.charcoal,
-          side: const BorderSide(color: ZelusColors.divider),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          foregroundColor: ZelusColors.textPrimary,
+          side: BorderSide(color: ZelusColors.border, width: 1.5),
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.3,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: ZelusColors.primary,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.2,
           ),
         ),
       ),
@@ -61,27 +92,69 @@ class ZelusTheme {
         filled: true,
         fillColor: ZelusColors.surface,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(16), // More rounded
+          borderSide: BorderSide(color: ZelusColors.border, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(color: ZelusColors.border, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: ZelusColors.gold, width: 1.5),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: ZelusColors.primary, width: 2),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: ZelusColors.error, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        labelStyle: TextStyle(
+          color: ZelusColors.textSecondary,
+          fontWeight: FontWeight.w500,
+        ),
+        hintStyle: TextStyle(
+          color: ZelusColors.textTertiary,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ZelusColors.primary,
+        foregroundColor: ZelusColors.textOnPrimary,
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: ZelusColors.surface,
+        selectedItemColor: ZelusColors.primary,
+        unselectedItemColor: ZelusColors.textTertiary,
+        elevation: 0,
+        type: BottomNavigationBarType.fixed,
+        selectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       dividerTheme: const DividerThemeData(
         color: ZelusColors.divider,
         space: 1,
         thickness: 1,
+      ),
+      chipTheme: ChipThemeData(
+        backgroundColor: ZelusColors.surfaceLight,
+        labelStyle: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }

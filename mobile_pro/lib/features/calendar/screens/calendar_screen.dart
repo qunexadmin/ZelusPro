@@ -60,36 +60,84 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     final selectedDayBookings = _getBookingsForDay(_selectedDay);
 
     return Scaffold(
+      backgroundColor: ZelusColors.background,
       appBar: AppBar(
-        title: const Text('Calendar'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _showAddAvailabilityDialog,
-          ),
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'today') {
-                setState(() {
-                  _selectedDay = DateTime.now();
-                  _focusedDay = DateTime.now();
-                });
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'today',
-                child: Text('Go to Today'),
+        title: Text(
+          'Calendar',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
               ),
-            ],
+        ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              gradient: ZelusColors.primaryGradient,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: ZelusColors.primary.withOpacity(0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.add, color: Colors.white),
+              onPressed: _showAddAvailabilityDialog,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              color: ZelusColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: ZelusColors.border.withOpacity(0.5),
+                width: 1,
+              ),
+            ),
+            child: PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert, size: 22),
+              onSelected: (value) {
+                if (value == 'today') {
+                  setState(() {
+                    _selectedDay = DateTime.now();
+                    _focusedDay = DateTime.now();
+                  });
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'today',
+                  child: Text('Go to Today'),
+                ),
+              ],
+            ),
           ),
         ],
       ),
       body: Column(
         children: [
-          // Calendar Widget
-          Card(
-            margin: const EdgeInsets.all(16),
+          // Modern Calendar Widget
+          Container(
+            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: ZelusColors.surface,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: ZelusColors.border.withOpacity(0.5),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: ZelusColors.shadow,
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
             child: TableCalendar(
               firstDay: DateTime.utc(2024, 1, 1),
               lastDay: DateTime.utc(2025, 12, 31),
@@ -109,16 +157,38 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               },
               calendarStyle: CalendarStyle(
                 selectedDecoration: BoxDecoration(
-                  color: ZelusColors.gold,
+                  gradient: ZelusColors.primaryGradient,
                   shape: BoxShape.circle,
                 ),
                 todayDecoration: BoxDecoration(
-                  color: ZelusColors.gold.withOpacity(0.3),
+                  color: ZelusColors.primary.withOpacity(0.15),
                   shape: BoxShape.circle,
+                  border: Border.all(color: ZelusColors.primary, width: 2),
                 ),
                 markerDecoration: BoxDecoration(
-                  color: ZelusColors.info,
+                  color: ZelusColors.accent,
                   shape: BoxShape.circle,
+                ),
+                weekendTextStyle: TextStyle(color: ZelusColors.error),
+                selectedTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              headerStyle: HeaderStyle(
+                formatButtonVisible: true,
+                titleCentered: true,
+                formatButtonShowsNext: false,
+                titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                formatButtonDecoration: BoxDecoration(
+                  color: ZelusColors.primaryLight.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                formatButtonTextStyle: TextStyle(
+                  color: ZelusColors.primary,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               eventLoader: (day) {
@@ -127,56 +197,115 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             ),
           ),
 
-          // Selected Date Header
+          // Modern Selected Date Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  DateFormatter.formatRelativeDate(_selectedDay),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      DateFormatter.formatRelativeDate(_selectedDay),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${selectedDayBookings.length} bookings scheduled',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: ZelusColors.textSecondary,
+                          ),
+                    ),
+                  ],
                 ),
-                Text(
-                  '${selectedDayBookings.length} bookings',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: ZelusColors.textSecondary,
-                      ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  decoration: BoxDecoration(
+                    gradient: selectedDayBookings.isEmpty
+                        ? null
+                        : ZelusColors.primaryGradient,
+                    color: selectedDayBookings.isEmpty
+                        ? ZelusColors.surfaceLight
+                        : null,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${selectedDayBookings.length}',
+                    style: TextStyle(
+                      color: selectedDayBookings.isEmpty
+                          ? ZelusColors.textSecondary
+                          : Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
 
-          // Bookings List
+          // Modern Bookings List
           Expanded(
             child: selectedDayBookings.isEmpty
-                ? EmptyState(
-                    icon: Icons.event_available_outlined,
-                    title: 'No bookings',
-                    message: 'You have no bookings on this day',
-                    actionText: 'Set Availability',
-                    onAction: _showAddAvailabilityDialog,
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                ZelusColors.primary.withOpacity(0.1),
+                                ZelusColors.secondary.withOpacity(0.1),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Icon(
+                            Icons.event_available_outlined,
+                            size: 40,
+                            color: ZelusColors.primary,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'No bookings',
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'You have no bookings on this day',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: ZelusColors.textSecondary,
+                              ),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton.icon(
+                          onPressed: _showAddAvailabilityDialog,
+                          icon: const Icon(Icons.add, size: 20),
+                          label: const Text('Set Availability'),
+                        ),
+                      ],
+                    ),
                   )
                 : ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     itemCount: selectedDayBookings.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final booking = selectedDayBookings[index];
-                      return BookingListItem(
-                        customerName: booking['customerName'],
-                        serviceName: booking['serviceName'],
-                        startTime: booking['startTime'],
-                        endTime: booking['endTime'],
-                        status: booking['status'],
-                        price: booking['price'],
+                      return _ModernBookingItem(
+                        booking: booking,
                         onTap: () => _showBookingDetails(booking),
-                        onAccept: () => _handleBookingAction(booking, 'accept'),
-                        onReject: () => _handleBookingAction(booking, 'reject'),
                       );
                     },
                   ),
@@ -301,6 +430,150 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     );
 
     // TODO: Update booking status via API
+  }
+}
+
+/// Modern booking item widget
+class _ModernBookingItem extends StatelessWidget {
+  final Map<String, dynamic> booking;
+  final VoidCallback onTap;
+
+  const _ModernBookingItem({
+    required this.booking,
+    required this.onTap,
+  });
+
+  Color _getStatusColor() {
+    switch (booking['status']) {
+      case 'confirmed':
+        return ZelusColors.success;
+      case 'pending':
+        return ZelusColors.warning;
+      case 'cancelled':
+        return ZelusColors.error;
+      default:
+        return ZelusColors.primary;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final statusColor = _getStatusColor();
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: ZelusColors.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: ZelusColors.border.withOpacity(0.5),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: ZelusColors.shadow,
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Center(
+                    child: Text(
+                      booking['customerName'][0],
+                      style: TextStyle(
+                        color: statusColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        booking['customerName'],
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        booking['serviceName'],
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: ZelusColors.textSecondary,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    booking['status'].toString().toUpperCase(),
+                    style: TextStyle(
+                      color: statusColor,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: ZelusColors.surfaceLight,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.access_time, size: 16, color: statusColor),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${booking['startTime']} - ${booking['endTime']}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const Spacer(),
+                  Icon(Icons.attach_money, size: 16, color: ZelusColors.success),
+                  Text(
+                    '\$${booking['price']}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: ZelusColors.success,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

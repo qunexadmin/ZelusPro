@@ -58,147 +58,288 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.watch(authProvider);
 
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Logo & Title
-                  Icon(
-                    Icons.business_center,
-                    size: 80,
-                    color: ZelusColors.gold,
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'ZELUS PRO',
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 2,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Business Dashboard',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: ZelusColors.textSecondary,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 48),
-
-                  // Email Field
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'you@example.com',
-                      prefixIcon: Icon(Icons.email_outlined),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Email is required';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Password Field
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      hintText: '••••••••',
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              ZelusColors.background,
+              ZelusColors.primary.withOpacity(0.03),
+              ZelusColors.secondary.withOpacity(0.03),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Modern Logo with gradient
+                    Container(
+                      width: 88,
+                      height: 88,
+                      decoration: BoxDecoration(
+                        gradient: ZelusColors.primaryGradient,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: ZelusColors.primary.withOpacity(0.3),
+                            blurRadius: 24,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.auto_awesome,
+                        size: 48,
+                        color: Colors.white,
                       ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Password is required';
-                      }
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Login Button
-                  CustomButton(
-                    text: 'Sign In',
-                    onPressed: authState.isLoading ? null : _handleLogin,
-                    isLoading: authState.isLoading,
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Forgot Password
-                  TextButton(
-                    onPressed: () {
-                      // TODO: Implement forgot password
-                    },
-                    child: const Text('Forgot Password?'),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Demo Credentials
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: ZelusColors.surface,
-                      borderRadius: BorderRadius.circular(12),
+                    const SizedBox(height: 32),
+                    
+                    // Title with modern typography
+                    Text(
+                      'Welcome Back',
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                      textAlign: TextAlign.center,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Demo Credentials',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Stylist: demo@zelus.com / password123',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        Text(
-                          'Owner: owner@zelus.com / password123',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
+                    const SizedBox(height: 12),
+                    Text(
+                      'Sign in to your Zelus Pro account',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: ZelusColors.textSecondary,
+                          ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 48),
+
+                    // Email Field with modern styling
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      style: const TextStyle(fontSize: 15),
+                      decoration: const InputDecoration(
+                        labelText: 'Email Address',
+                        hintText: 'you@example.com',
+                        prefixIcon: Icon(Icons.email_outlined, size: 22),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Email is required';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Password Field with modern styling
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      style: const TextStyle(fontSize: 15),
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        hintText: '••••••••',
+                        prefixIcon: const Icon(Icons.lock_outline, size: 22),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            size: 22,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Password is required';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Modern gradient button
+                    Container(
+                      height: 56,
+                      decoration: BoxDecoration(
+                        gradient: authState.isLoading
+                            ? null
+                            : ZelusColors.primaryGradient,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: authState.isLoading
+                            ? []
+                            : [
+                                BoxShadow(
+                                  color: ZelusColors.primary.withOpacity(0.3),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: authState.isLoading ? null : _handleLogin,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: authState.isLoading
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2.5,
+                                ),
+                              )
+                            : const Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Forgot Password
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          // TODO: Implement forgot password
+                        },
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            color: ZelusColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+
+                    // Demo Credentials with modern card
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: ZelusColors.infoLight.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: ZelusColors.info.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                size: 20,
+                                color: ZelusColors.info,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Demo Accounts',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: ZelusColors.info,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          _DemoCredentialRow(
+                            icon: Icons.person_outline,
+                            label: 'Stylist',
+                            email: 'demo@zelus.com',
+                            password: 'password123',
+                          ),
+                          const SizedBox(height: 8),
+                          _DemoCredentialRow(
+                            icon: Icons.business_outlined,
+                            label: 'Owner',
+                            email: 'owner@zelus.com',
+                            password: 'password123',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Modern demo credential row widget
+class _DemoCredentialRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String email;
+  final String password;
+
+  const _DemoCredentialRow({
+    required this.icon,
+    required this.label,
+    required this.email,
+    required this.password,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: ZelusColors.textSecondary),
+        const SizedBox(width: 8),
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodySmall,
+              children: [
+                TextSpan(
+                  text: '$label: ',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextSpan(text: '$email / $password'),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

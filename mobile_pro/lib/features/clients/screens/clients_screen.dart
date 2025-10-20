@@ -58,21 +58,45 @@ class _ClientsScreenState extends ConsumerState<ClientsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ZelusColors.background,
       appBar: AppBar(
-        title: const Text('Clients'),
+        title: Text(
+          'Clients',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
+          preferredSize: const Size.fromHeight(70),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search clients...',
-                prefixIcon: const Icon(Icons.search),
+                hintStyle: TextStyle(
+                  color: ZelusColors.textTertiary,
+                  fontWeight: FontWeight.w400,
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: ZelusColors.textSecondary,
+                  size: 22,
+                ),
                 filled: true,
                 fillColor: ZelusColors.surface,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                    color: ZelusColors.border.withOpacity(0.5),
+                    width: 1,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(
+                    color: ZelusColors.border.withOpacity(0.5),
+                    width: 1,
+                  ),
                 ),
               ),
               onChanged: (value) {
@@ -85,34 +109,89 @@ class _ClientsScreenState extends ConsumerState<ClientsScreen> {
         ),
       ),
       body: _filteredClients.isEmpty
-          ? EmptyState(
-              icon: Icons.people_outline,
-              title: 'No clients found',
-              message: _searchQuery.isEmpty
-                  ? 'Your client list is empty'
-                  : 'No clients match your search',
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          ZelusColors.primary.withOpacity(0.1),
+                          ZelusColors.secondary.withOpacity(0.1),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      Icons.people_outline,
+                      size: 40,
+                      color: ZelusColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'No clients found',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _searchQuery.isEmpty
+                        ? 'Your client list is empty'
+                        : 'No clients match your search',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: ZelusColors.textSecondary,
+                        ),
+                  ),
+                ],
+              ),
             )
           : ListView.separated(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
               itemCount: _filteredClients.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              separatorBuilder: (context, index) => const SizedBox(height: 16),
               itemBuilder: (context, index) {
                 final client = _filteredClients[index];
-                return _ClientCard(
+                return _ModernClientCard(
                   client: client,
                   onTap: () => _showClientDetails(client),
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // TODO: Add new client
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Add client coming soon')),
-          );
-        },
-        icon: const Icon(Icons.person_add),
-        label: const Text('Add Client'),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          gradient: ZelusColors.primaryGradient,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: ZelusColors.primary.withOpacity(0.4),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            // TODO: Add new client
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Add client coming soon')),
+            );
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          icon: const Icon(Icons.person_add, size: 20),
+          label: const Text(
+            'Add Client',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -234,53 +313,152 @@ class _ClientsScreenState extends ConsumerState<ClientsScreen> {
   }
 }
 
-class _ClientCard extends StatelessWidget {
+/// Modern client card widget
+class _ModernClientCard extends StatelessWidget {
   final Map<String, dynamic> client;
   final VoidCallback onTap;
 
-  const _ClientCard({required this.client, required this.onTap});
+  const _ModernClientCard({required this.client, required this.onTap});
+
+  Color _getAvatarColor(int index) {
+    final colors = [
+      ZelusColors.primary,
+      ZelusColors.secondary,
+      ZelusColors.accent,
+      ZelusColors.success,
+      ZelusColors.warning,
+    ];
+    return colors[client['name'].hashCode % colors.length];
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: ZelusColors.gold.withOpacity(0.2),
+    final avatarColor = _getAvatarColor(0);
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: ZelusColors.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: ZelusColors.border.withOpacity(0.5),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: ZelusColors.shadow,
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: avatarColor.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Center(
                 child: Text(
                   client['name'][0],
-                  style: const TextStyle(
-                    color: ZelusColors.gold,
-                    fontWeight: FontWeight.w500,
+                  style: TextStyle(
+                    color: avatarColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      client['name'],
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                    Text(
-                      '${client['totalVisits']} visits • \$${client['totalSpent']}',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    client['name'],
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: ZelusColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.event_available,
+                              size: 12,
+                              color: ZelusColors.primary,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${client['totalVisits']} visits',
+                              style: TextStyle(
+                                color: ZelusColors.primary,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: ZelusColors.success.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.attach_money,
+                              size: 12,
+                              color: ZelusColors.success,
+                            ),
+                            Text(
+                              '${client['totalSpent']}',
+                              style: TextStyle(
+                                color: ZelusColors.success,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              const Icon(Icons.chevron_right, color: ZelusColors.textSecondary),
-            ],
-          ),
+            ),
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: avatarColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                Icons.arrow_forward_ios,
+                size: 14,
+                color: avatarColor,
+              ),
+            ),
+          ],
         ),
       ),
     );

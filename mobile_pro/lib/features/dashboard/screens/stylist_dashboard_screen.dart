@@ -16,31 +16,78 @@ class StylistDashboardScreen extends ConsumerWidget {
     final user = ref.watch(authProvider).user;
 
     return Scaffold(
+      backgroundColor: ZelusColors.background,
       appBar: AppBar(
+        toolbarHeight: 80,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Dashboard'),
             Text(
-              'Welcome back, ${user?.name ?? 'Stylist'}!',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              'Welcome back,',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: ZelusColors.textSecondary,
+                  ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              user?.name ?? 'Stylist',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
             ),
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () {
-              // TODO: Navigate to notifications
-            },
+          Container(
+            margin: const EdgeInsets.only(right: 8),
+            decoration: BoxDecoration(
+              color: ZelusColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: ZelusColors.border.withOpacity(0.5),
+                width: 1,
+              ),
+            ),
+            child: IconButton(
+              icon: Stack(
+                children: [
+                  const Icon(Icons.notifications_outlined, size: 22),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: ZelusColors.error,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: ZelusColors.surface, width: 1.5),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                // TODO: Navigate to notifications
+              },
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () {
-              // TODO: Navigate to settings
-            },
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              color: ZelusColors.surface,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: ZelusColors.border.withOpacity(0.5),
+                width: 1,
+              ),
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.settings_outlined, size: 22),
+              onPressed: () {
+                // TODO: Navigate to settings
+              },
+            ),
           ),
         ],
       ),
@@ -50,246 +97,270 @@ class StylistDashboardScreen extends ConsumerWidget {
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Today's Stats
+              // Today's Stats with modern cards
               Row(
                 children: [
                   Expanded(
                     child: StatCard(
-                      title: 'Today\'s Bookings',
+                      title: 'Bookings',
                       value: '4',
-                      icon: Icons.calendar_today,
-                      color: ZelusColors.gold,
+                      icon: Icons.event_available_outlined,
+                      color: ZelusColors.primary,
+                      trend: '+12%',
+                      isPositiveTrend: true,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: StatCard(
-                      title: 'Today\'s Earnings',
+                      title: 'Earnings',
                       value: '\$380',
-                      icon: Icons.attach_money,
+                      icon: Icons.trending_up,
                       color: ZelusColors.success,
+                      trend: '+8%',
+                      isPositiveTrend: true,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
                     child: StatCard(
-                      title: 'New Messages',
+                      title: 'Messages',
                       value: '3',
-                      icon: Icons.message_outlined,
-                      color: ZelusColors.info,
+                      icon: Icons.chat_bubble_outline,
+                      color: ZelusColors.accent,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: StatCard(
                       title: 'Rating',
                       value: '4.9',
-                      icon: Icons.star,
+                      icon: Icons.star_rounded,
                       color: ZelusColors.warning,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
-              // Quick Actions
+              // Quick Actions with modern design
               Text(
                 'Quick Actions',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                     ),
               ),
-              const SizedBox(height: 12),
-              Row(
+              const SizedBox(height: 16),
+              GridView.count(
+                crossAxisCount: 3,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 1,
                 children: [
-                  Expanded(
-                    child: QuickActionButton(
-                      icon: Icons.add_photo_alternate_outlined,
-                      label: 'Upload Work',
-                      onTap: () {
-                        // TODO: Navigate to upload
-                      },
-                    ),
+                  _ModernQuickActionCard(
+                    icon: Icons.add_photo_alternate_outlined,
+                    label: 'Upload',
+                    gradient: ZelusColors.primaryGradient,
+                    onTap: () {},
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: QuickActionButton(
-                      icon: Icons.schedule,
-                      label: 'Set Availability',
-                      onTap: () {
-                        context.go('/calendar');
-                      },
-                    ),
+                  _ModernQuickActionCard(
+                    icon: Icons.schedule_outlined,
+                    label: 'Schedule',
+                    gradient: ZelusColors.accentGradient,
+                    onTap: () => context.go('/calendar'),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: QuickActionButton(
-                      icon: Icons.people_outline,
-                      label: 'Clients',
-                      onTap: () {
-                        context.go('/clients');
-                      },
+                  _ModernQuickActionCard(
+                    icon: Icons.people_outline,
+                    label: 'Clients',
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF8B5CF6), Color(0xFFEC4899)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
+                    onTap: () => context.go('/clients'),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
-              // Upcoming Bookings
+              // Upcoming Bookings with modern header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Upcoming Bookings',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w700,
                         ),
                   ),
-                  TextButton(
+                  TextButton.icon(
                     onPressed: () {
                       context.go('/calendar');
                     },
-                    child: const Text('View All'),
+                    icon: const Icon(Icons.arrow_forward, size: 18),
+                    label: const Text('View All'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: ZelusColors.primary,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
-              // Booking Cards (Mock Data)
-              UpcomingBookingCard(
+              // Booking Cards (Mock Data) with modern styling
+              _ModernBookingCard(
                 customerName: 'Sarah Wilson',
                 serviceName: 'Haircut & Style',
                 time: '10:00 AM',
-                date: DateFormatter.formatDate(DateTime.now()),
-                customerPhoto: null,
-                onTap: () {
-                  // TODO: Navigate to booking details
-                },
+                avatarColor: ZelusColors.primary,
               ),
               const SizedBox(height: 12),
-              UpcomingBookingCard(
+              _ModernBookingCard(
                 customerName: 'Emily Chen',
                 serviceName: 'Color Treatment',
                 time: '2:00 PM',
-                date: DateFormatter.formatDate(DateTime.now()),
-                customerPhoto: null,
-                onTap: () {
-                  // TODO: Navigate to booking details
-                },
+                avatarColor: ZelusColors.secondary,
               ),
               const SizedBox(height: 12),
-              UpcomingBookingCard(
+              _ModernBookingCard(
                 customerName: 'Michael Brown',
                 serviceName: 'Beard Trim',
                 time: '4:30 PM',
-                date: DateFormatter.formatDate(DateTime.now()),
-                customerPhoto: null,
-                onTap: () {
-                  // TODO: Navigate to booking details
-                },
+                avatarColor: ZelusColors.accent,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
-              // Recent Activity
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Recent Activity',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ],
+              // Recent Activity with modern design
+              Text(
+                'Recent Activity',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
-              const SizedBox(height: 12),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      _ActivityItem(
-                        icon: Icons.person_add_outlined,
-                        title: 'New follower',
-                        subtitle: 'Jessica Lee started following you',
-                        time: '2h ago',
-                      ),
-                      const Divider(height: 24),
-                      _ActivityItem(
-                        icon: Icons.star_outlined,
-                        title: 'New review',
-                        subtitle: '5 stars from David Park',
-                        time: '5h ago',
-                      ),
-                      const Divider(height: 24),
-                      _ActivityItem(
-                        icon: Icons.schedule,
-                        title: 'Booking confirmed',
-                        subtitle: 'Tomorrow at 11:00 AM',
-                        time: '1d ago',
-                      ),
-                    ],
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: ZelusColors.surface,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: ZelusColors.border.withOpacity(0.5),
+                    width: 1,
                   ),
                 ),
+                child: Column(
+                  children: [
+                    _ModernActivityItem(
+                      icon: Icons.person_add_outlined,
+                      iconColor: ZelusColors.primary,
+                      title: 'New follower',
+                      subtitle: 'Jessica Lee started following you',
+                      time: '2h ago',
+                    ),
+                    const Divider(height: 24),
+                    _ModernActivityItem(
+                      icon: Icons.star_rounded,
+                      iconColor: ZelusColors.warning,
+                      title: 'New review',
+                      subtitle: '5 stars from David Park',
+                      time: '5h ago',
+                    ),
+                    const Divider(height: 24),
+                    _ModernActivityItem(
+                      icon: Icons.check_circle_outline,
+                      iconColor: ZelusColors.success,
+                      title: 'Booking confirmed',
+                      subtitle: 'Tomorrow at 11:00 AM',
+                      time: '1d ago',
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
-        selectedItemColor: ZelusColors.gold,
-        unselectedItemColor: ZelusColors.textSecondary,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              break; // Already on dashboard
-            case 1:
-              context.go('/calendar');
-              break;
-            case 2:
-              context.go('/clients');
-              break;
-            case 3:
-              context.go('/profile');
-              break;
-            case 4:
-              // More menu
-              _showMoreMenu(context);
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_outlined),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: ZelusColors.surface,
+          border: Border(
+            top: BorderSide(
+              color: ZelusColors.border.withOpacity(0.3),
+              width: 1,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
-            label: 'Calendar',
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              currentIndex: 0,
+              selectedItemColor: ZelusColors.primary,
+              unselectedItemColor: ZelusColors.textTertiary,
+              selectedFontSize: 12,
+              unselectedFontSize: 12,
+              onTap: (index) {
+                switch (index) {
+                  case 0:
+                    break; // Already on dashboard
+                  case 1:
+                    context.go('/calendar');
+                    break;
+                  case 2:
+                    context.go('/clients');
+                    break;
+                  case 3:
+                    context.go('/profile');
+                    break;
+                  case 4:
+                    // More menu
+                    _showMoreMenu(context);
+                    break;
+                }
+              },
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_outlined, size: 24),
+                  activeIcon: Icon(Icons.home, size: 24),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_today_outlined, size: 24),
+                  activeIcon: Icon(Icons.calendar_today, size: 24),
+                  label: 'Calendar',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people_outline, size: 24),
+                  activeIcon: Icon(Icons.people, size: 24),
+                  label: 'Clients',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outline, size: 24),
+                  activeIcon: Icon(Icons.person, size: 24),
+                  label: 'Profile',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.more_horiz, size: 24),
+                  label: 'More',
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people_outline),
-            label: 'Clients',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'More',
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -335,14 +406,162 @@ class StylistDashboardScreen extends ConsumerWidget {
   }
 }
 
-class _ActivityItem extends StatelessWidget {
+/// Modern quick action card with gradient
+class _ModernQuickActionCard extends StatelessWidget {
   final IconData icon;
+  final String label;
+  final LinearGradient gradient;
+  final VoidCallback onTap;
+
+  const _ModernQuickActionCard({
+    required this.icon,
+    required this.label,
+    required this.gradient,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: gradient.colors.first.withOpacity(0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white, size: 28),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Modern booking card
+class _ModernBookingCard extends StatelessWidget {
+  final String customerName;
+  final String serviceName;
+  final String time;
+  final Color avatarColor;
+
+  const _ModernBookingCard({
+    required this.customerName,
+    required this.serviceName,
+    required this.time,
+    required this.avatarColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: ZelusColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: ZelusColors.border.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: avatarColor.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Center(
+              child: Text(
+                customerName[0],
+                style: TextStyle(
+                  color: avatarColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  customerName,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  serviceName,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: ZelusColors.textSecondary,
+                      ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: avatarColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.access_time, size: 14, color: avatarColor),
+                const SizedBox(width: 4),
+                Text(
+                  time,
+                  style: TextStyle(
+                    color: avatarColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Modern activity item
+class _ModernActivityItem extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
   final String title;
   final String subtitle;
   final String time;
 
-  const _ActivityItem({
+  const _ModernActivityItem({
     required this.icon,
+    required this.iconColor,
     required this.title,
     required this.subtitle,
     required this.time,
@@ -356,10 +575,10 @@ class _ActivityItem extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: ZelusColors.surface,
-            borderRadius: BorderRadius.circular(8),
+            color: iconColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, size: 20, color: ZelusColors.gold),
+          child: Icon(icon, size: 20, color: iconColor),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -368,18 +587,25 @@ class _ActivityItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
+              const SizedBox(height: 2),
               Text(
                 subtitle,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: ZelusColors.textSecondary,
+                    ),
               ),
             ],
           ),
         ),
         Text(
           time,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ZelusColors.textTertiary,
+              ),
         ),
       ],
     );
