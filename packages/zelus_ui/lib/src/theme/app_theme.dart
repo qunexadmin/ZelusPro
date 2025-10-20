@@ -29,7 +29,7 @@ class ZelusTheme {
         centerTitle: true,
         titleTextStyle: ZelusTypography.getTextTheme().headlineMedium,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: ZelusColors.white,
         elevation: 1,
         shape: RoundedRectangleBorder(
