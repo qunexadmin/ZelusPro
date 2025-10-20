@@ -117,12 +117,7 @@ class _ClientsScreenState extends ConsumerState<ClientsScreen> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          ZelusColors.primary.withOpacity(0.1),
-                          ZelusColors.secondary.withOpacity(0.1),
-                        ],
-                      ),
+                      color: ZelusColors.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Icon(
@@ -141,8 +136,8 @@ class _ClientsScreenState extends ConsumerState<ClientsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     _searchQuery.isEmpty
-                        ? 'Your client list is empty'
-                        : 'No clients match your search',
+                  ? 'Your client list is empty'
+                  : 'No clients match your search',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: ZelusColors.textSecondary,
                         ),
@@ -162,34 +157,20 @@ class _ClientsScreenState extends ConsumerState<ClientsScreen> {
                 );
               },
             ),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          gradient: ZelusColors.primaryGradient,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: ZelusColors.primary.withOpacity(0.4),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: FloatingActionButton.extended(
-          onPressed: () {
-            // TODO: Add new client
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Add client coming soon')),
-            );
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          icon: const Icon(Icons.person_add, size: 20),
-          label: const Text(
-            'Add Client',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.3,
-            ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // TODO: Add new client
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Add client coming soon')),
+          );
+        },
+        backgroundColor: ZelusColors.primary,
+        icon: const Icon(Icons.person_add, size: 20),
+        label: const Text(
+          'Add Client',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.3,
           ),
         ),
       ),
@@ -336,26 +317,19 @@ class _ModernClientCard extends StatelessWidget {
     final avatarColor = _getAvatarColor(0);
 
     return GestureDetector(
-      onTap: onTap,
+        onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: ZelusColors.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: ZelusColors.border.withOpacity(0.5),
+            color: ZelusColors.border,
             width: 1,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: ZelusColors.shadow,
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
-        child: Row(
-          children: [
+          child: Row(
+            children: [
             Container(
               width: 56,
               height: 56,
@@ -375,13 +349,13 @@ class _ModernClientCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    client['name'],
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      client['name'],
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                   ),
@@ -428,18 +402,18 @@ class _ModernClientCard extends StatelessWidget {
                               Icons.attach_money,
                               size: 12,
                               color: ZelusColors.success,
-                            ),
-                            Text(
+                    ),
+                    Text(
                               '${client['totalSpent']}',
                               style: TextStyle(
                                 color: ZelusColors.success,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    ),
+                  ],
+                ),
+              ),
                     ],
                   ),
                 ],

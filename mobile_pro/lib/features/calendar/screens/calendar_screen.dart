@@ -72,15 +72,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
           Container(
             margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
-              gradient: ZelusColors.primaryGradient,
+              color: ZelusColors.primary,
               borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: ZelusColors.primary.withOpacity(0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: IconButton(
               icon: const Icon(Icons.add, color: Colors.white),
@@ -93,7 +86,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               color: ZelusColors.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: ZelusColors.border.withOpacity(0.5),
+                color: ZelusColors.border,
                 width: 1,
               ),
             ),
@@ -125,18 +118,11 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: ZelusColors.surface,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: ZelusColors.border.withOpacity(0.5),
+                color: ZelusColors.border,
                 width: 1,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: ZelusColors.shadow,
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: TableCalendar(
               firstDay: DateTime.utc(2024, 1, 1),
@@ -157,19 +143,19 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
               },
               calendarStyle: CalendarStyle(
                 selectedDecoration: BoxDecoration(
-                  gradient: ZelusColors.primaryGradient,
+                  color: ZelusColors.primary,
                   shape: BoxShape.circle,
                 ),
                 todayDecoration: BoxDecoration(
-                  color: ZelusColors.primary.withOpacity(0.15),
+                  color: ZelusColors.primary.withOpacity(0.1),
                   shape: BoxShape.circle,
-                  border: Border.all(color: ZelusColors.primary, width: 2),
+                  border: Border.all(color: ZelusColors.primary, width: 1.5),
                 ),
                 markerDecoration: BoxDecoration(
-                  color: ZelusColors.accent,
+                  color: ZelusColors.primary,
                   shape: BoxShape.circle,
                 ),
-                weekendTextStyle: TextStyle(color: ZelusColors.error),
+                weekendTextStyle: TextStyle(color: ZelusColors.textSecondary),
                 selectedTextStyle: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -224,20 +210,23 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   decoration: BoxDecoration(
-                    gradient: selectedDayBookings.isEmpty
-                        ? null
-                        : ZelusColors.primaryGradient,
                     color: selectedDayBookings.isEmpty
-                        ? ZelusColors.surfaceLight
-                        : null,
+                        ? ZelusColors.surface
+                        : ZelusColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: selectedDayBookings.isEmpty
+                          ? ZelusColors.border
+                          : ZelusColors.primary,
+                      width: 1,
+                    ),
                   ),
                   child: Text(
                     '${selectedDayBookings.length}',
                     style: TextStyle(
                       color: selectedDayBookings.isEmpty
                           ? ZelusColors.textSecondary
-                          : Colors.white,
+                          : ZelusColors.primary,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                     ),
@@ -259,12 +248,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                ZelusColors.primary.withOpacity(0.1),
-                                ZelusColors.secondary.withOpacity(0.1),
-                              ],
-                            ),
+                            color: ZelusColors.primary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Icon(
@@ -466,18 +450,11 @@ class _ModernBookingItem extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: ZelusColors.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: ZelusColors.border.withOpacity(0.5),
+            color: ZelusColors.border,
             width: 1,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: ZelusColors.shadow,
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
