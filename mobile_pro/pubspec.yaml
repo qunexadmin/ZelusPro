@@ -1,0 +1,62 @@
+name: zelus_pro
+description: Zelus Pro - Business app for stylists and salon owners
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Shared Packages
+  zelus_api:
+    path: ../packages/zelus_api
+  zelus_core:
+    path: ../packages/zelus_core
+  zelus_ui:
+    path: ../packages/zelus_ui
+
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+
+  # Navigation
+  go_router: ^12.1.3
+
+  # Calendar
+  table_calendar: ^3.0.9
+  syncfusion_flutter_calendar: ^23.2.7
+
+  # Charts
+  fl_chart: ^0.65.0
+
+  # UI Components
+  cupertino_icons: ^1.0.6
+  cached_network_image: ^3.3.0
+  shimmer: ^3.0.0
+
+  # Image Handling
+  image_picker: ^1.0.5
+
+  # Date & Time
+  intl: ^0.18.1
+
+  # Utils
+  uuid: ^4.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  build_runner: ^2.4.7
+  riverpod_generator: ^2.3.9
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
