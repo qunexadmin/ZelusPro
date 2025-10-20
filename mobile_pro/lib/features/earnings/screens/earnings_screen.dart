@@ -52,83 +52,62 @@ class _EarningsScreenState extends ConsumerState<EarningsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Modern Total Earnings Card
+            // Clean Total Earnings Card
             Container(
-              padding: const EdgeInsets.all(28),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                gradient: ZelusColors.primaryGradient,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: ZelusColors.primary.withOpacity(0.3),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+                color: ZelusColors.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: ZelusColors.border,
+                  width: 1,
+                ),
               ),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Total Earnings',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: ZelusColors.textSecondary,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     '\$2,450',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: Colors.white,
                         ),
                   ),
                   const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      'This $_selectedPeriod',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                  Text(
+                    'This $_selectedPeriod',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: ZelusColors.textSecondary,
+                        ),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 20),
 
-            // Stats Row with modern cards
+            // Clean stats row
             Row(
               children: [
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: ZelusColors.surface,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: ZelusColors.border.withOpacity(0.5),
+                        color: ZelusColors.border,
                         width: 1,
                       ),
                     ),
                     child: Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: ZelusColors.success.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(Icons.trending_up, color: ZelusColors.success, size: 24),
-                        ),
+                        Icon(Icons.trending_up, color: ZelusColors.success, size: 20),
                         const SizedBox(height: 12),
                         const Text('28', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 4),
@@ -139,28 +118,21 @@ class _EarningsScreenState extends ConsumerState<EarningsScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: ZelusColors.surface,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: ZelusColors.border.withOpacity(0.5),
+                        color: ZelusColors.border,
                         width: 1,
                       ),
                     ),
                     child: Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: ZelusColors.warning.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(Icons.attach_money, color: ZelusColors.warning, size: 24),
-                        ),
+                        Icon(Icons.attach_money, color: ZelusColors.success, size: 20),
                         const SizedBox(height: 12),
                         const Text('\$87', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
                         const SizedBox(height: 4),

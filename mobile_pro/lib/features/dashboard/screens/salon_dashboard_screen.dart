@@ -137,52 +137,40 @@ class SalonDashboardScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 32),
 
-            // Quick Actions
+            // Quick Actions - minimal
             Text(
               'Quick Actions',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
               childAspectRatio: 1.5,
               children: [
-                _ModernActionCard(
+                _MinimalActionCard(
                   icon: Icons.people_outline,
                   label: 'Manage Staff',
-                  gradient: ZelusColors.primaryGradient,
                   onTap: () => context.go('/staff'),
                 ),
-                _ModernActionCard(
+                _MinimalActionCard(
                   icon: Icons.analytics_outlined,
                   label: 'Analytics',
-                  gradient: ZelusColors.accentGradient,
                   onTap: () => context.go('/analytics'),
                 ),
-                _ModernActionCard(
+                _MinimalActionCard(
                   icon: Icons.calendar_today_outlined,
                   label: 'Bookings',
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF8B5CF6), Color(0xFFEC4899)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
                   onTap: () => context.go('/calendar'),
                 ),
-                _ModernActionCard(
+                _MinimalActionCard(
                   icon: Icons.settings_outlined,
                   label: 'Settings',
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF10B981), Color(0xFF34D399)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
                   onTap: () {},
                 ),
               ],
@@ -195,17 +183,15 @@ class SalonDashboardScreen extends ConsumerWidget {
   }
 }
 
-/// Modern action card with gradient
-class _ModernActionCard extends StatelessWidget {
+/// Minimal action card - ChatGPT style
+class _MinimalActionCard extends StatelessWidget {
   final IconData icon;
   final String label;
-  final LinearGradient gradient;
   final VoidCallback onTap;
 
-  const _ModernActionCard({
+  const _MinimalActionCard({
     required this.icon,
     required this.label,
-    required this.gradient,
     required this.onTap,
   });
 
@@ -214,37 +200,32 @@ class _ModernActionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: gradient.colors.first.withOpacity(0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+          color: ZelusColors.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: ZelusColors.border,
+            width: 1,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: ZelusColors.textPrimary, size: 24),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: TextStyle(
+                color: ZelusColors.textPrimary,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: Colors.white, size: 32),
-              const SizedBox(height: 12),
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
         ),
       ),
     );

@@ -24,123 +24,60 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            ZelusColors.surface,
-            ZelusColors.surfaceLight,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
+        color: ZelusColors.surface,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: ZelusColors.border.withOpacity(0.3),
+          color: ZelusColors.border,
           width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: ZelusColors.shadow,
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Icon with gradient background
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        color.withOpacity(0.15),
-                        color.withOpacity(0.05),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Icon(icon, color: color, size: 24),
-                ),
-                const SizedBox(height: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Simple icon - no background
+          Icon(icon, color: color, size: 20),
+          const SizedBox(height: 16),
                 
-                // Value with trend
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        value,
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: -0.5,
-                            ),
-                      ),
-                    ),
-                    if (trend != null) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: (isPositiveTrend ?? true)
-                              ? ZelusColors.successLight
-                              : ZelusColors.errorLight,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              (isPositiveTrend ?? true)
-                                  ? Icons.trending_up
-                                  : Icons.trending_down,
-                              size: 12,
-                              color: (isPositiveTrend ?? true)
-                                  ? ZelusColors.success
-                                  : ZelusColors.error,
-                            ),
-                            const SizedBox(width: 2),
-                            Text(
-                              trend!,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: (isPositiveTrend ?? true)
-                                    ? ZelusColors.success
-                                    : ZelusColors.error,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ],
+          // Title first (minimal style)
+          Text(
+            title,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: ZelusColors.textSecondary,
+                  fontWeight: FontWeight.w500,
                 ),
-                const SizedBox(height: 8),
-                
-                // Title
+          ),
+          const SizedBox(height: 8),
+          
+          // Value with optional trend
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                value,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.5,
+                    ),
+              ),
+              if (trend != null) ...[
+                const SizedBox(width: 8),
                 Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: ZelusColors.textSecondary,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  trend!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: (isPositiveTrend ?? true)
+                        ? ZelusColors.success
+                        : ZelusColors.error,
+                  ),
                 ),
               ],
-            ),
+            ],
           ),
-        ),
+        ],
       ),
     );
   }

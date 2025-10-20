@@ -151,47 +151,42 @@ class StylistDashboardScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 32),
 
-              // Quick Actions with modern design
+              // Quick Actions - minimal style
               Text(
                 'Quick Actions',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
                     ),
               ),
-              const SizedBox(height: 16),
-              GridView.count(
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 1,
+              const SizedBox(height: 12),
+              Row(
                 children: [
-                  _ModernQuickActionCard(
-                    icon: Icons.add_photo_alternate_outlined,
-                    label: 'Upload',
-                    gradient: ZelusColors.primaryGradient,
-                    onTap: () {},
-                  ),
-                  _ModernQuickActionCard(
-                    icon: Icons.schedule_outlined,
-                    label: 'Schedule',
-                    gradient: ZelusColors.accentGradient,
-                    onTap: () => context.go('/calendar'),
-                  ),
-                  _ModernQuickActionCard(
-                    icon: Icons.people_outline,
-                    label: 'Clients',
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF8B5CF6), Color(0xFFEC4899)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                  Expanded(
+                    child: _MinimalActionButton(
+                      icon: Icons.add_photo_alternate_outlined,
+                      label: 'Upload',
+                      onTap: () {},
                     ),
-                    onTap: () => context.go('/clients'),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _MinimalActionButton(
+                      icon: Icons.schedule_outlined,
+                      label: 'Schedule',
+                      onTap: () => context.go('/calendar'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _MinimalActionButton(
+                      icon: Icons.people_outline,
+                      label: 'Clients',
+                      onTap: () => context.go('/clients'),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
               // Upcoming Bookings with modern header
               Row(
@@ -296,17 +291,15 @@ class StylistDashboardScreen extends ConsumerWidget {
 
 }
 
-/// Modern quick action card with gradient
-class _ModernQuickActionCard extends StatelessWidget {
+/// Minimal action button - ChatGPT style
+class _MinimalActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
-  final LinearGradient gradient;
   final VoidCallback onTap;
 
-  const _ModernQuickActionCard({
+  const _MinimalActionButton({
     required this.icon,
     required this.label,
-    required this.gradient,
     required this.onTap,
   });
 
@@ -315,29 +308,28 @@ class _ModernQuickActionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: gradient.colors.first.withOpacity(0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          color: ZelusColors.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: ZelusColors.border,
+            width: 1,
+          ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.white, size: 28),
-            const SizedBox(height: 8),
+            Icon(icon, color: ZelusColors.textPrimary, size: 22),
+            const SizedBox(height: 6),
             Text(
               label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
+              style: TextStyle(
+                color: ZelusColors.textPrimary,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

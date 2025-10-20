@@ -43,22 +43,15 @@ class ProfileScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Modern profile header
+            // Clean profile header
             Container(
-              width: 100,
-              height: 100,
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
-                gradient: ZelusColors.primaryGradient,
+                color: ZelusColors.primary.withOpacity(0.1),
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: ZelusColors.primary.withOpacity(0.3),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
               ),
-              child: const Icon(Icons.person, size: 50, color: Colors.white),
+              child: Icon(Icons.person, size: 40, color: ZelusColors.primary),
             ),
             const SizedBox(height: 20),
             Text(
